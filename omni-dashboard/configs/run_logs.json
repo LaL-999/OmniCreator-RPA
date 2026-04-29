@@ -1,0 +1,93 @@
+[
+    {
+        "timestamp": "2026-04-20 23:04:43",
+        "profile_id": "k1bhea90",
+        "script": "1. 图文发帖",
+        "status": "error",
+        "msg": "发布失败熔断: Target page, context or browser has been closed\n=========================== logs ===========================\nwaiting for navigation to \"re.compile('published=true|note-manager')\" until 'load'\n  navigated to \"https://creator.xiaohongshu.com/publish/publish?from=tab_switch&target=image\"\n============================================================"
+    },
+    {
+        "timestamp": "2026-04-20 23:04:36",
+        "profile_id": "k1bheamh",
+        "script": "5. 视频发帖",
+        "status": "success",
+        "msg": "视频 [2026-04-17 21-58-29.mp4] 发布成功"
+    },
+    {
+        "timestamp": "2026-04-20 22:58:27",
+        "profile_id": "k1bhea90",
+        "script": "4. 回关互动",
+        "status": "success",
+        "msg": "互动与回关任务处理完毕"
+    },
+    {
+        "timestamp": "2026-04-20 22:58:25",
+        "profile_id": "k1bheamh",
+        "script": "5. 视频发帖",
+        "status": "error",
+        "msg": "发布流程熔断: Page.goto: Target page, context or browser has been closed"
+    },
+    {
+        "timestamp": "2026-04-20 22:54:40",
+        "profile_id": "k1bheamh",
+        "script": "5. 视频发帖",
+        "status": "error",
+        "msg": "发布流程熔断: Mouse.click: Target page, context or browser has been closed"
+    },
+    {
+        "timestamp": "2026-04-20 22:43:35",
+        "profile_id": "k1bheamh",
+        "script": "5. 视频发帖",
+        "status": "error",
+        "msg": "发布流程熔断: Mouse.click: Target page, context or browser has been closed"
+    },
+    {
+        "timestamp": "2026-04-20 22:37:21",
+        "profile_id": "k1bheamh",
+        "script": "5. 视频发帖",
+        "status": "error",
+        "msg": "发布流程熔断: 上传区域完全丢失，小红书页面可能发生巨幅改版，或网络加载失败！"
+    },
+    {
+        "timestamp": "2026-04-20 22:33:21",
+        "profile_id": "k1bhea90",
+        "script": "4. 回关互动",
+        "status": "success",
+        "msg": "互动与回关任务处理完毕"
+    },
+    {
+        "timestamp": "2026-04-20 22:08:55",
+        "profile_id": "k1bheamh",
+        "script": "5. 视频发帖",
+        "status": "error",
+        "msg": "发布流程熔断: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".drag-container, .upload-wrapper-box\").first\n"
+    },
+    {
+        "timestamp": "2026-04-20 21:58:00",
+        "profile_id": "k1bheai1",
+        "script": "4. 回关互动",
+        "status": "success",
+        "msg": "互动与回关任务处理完毕"
+    },
+    {
+        "timestamp": "2026-04-20 21:57:03",
+        "profile_id": "k1bheai1",
+        "script": "5. 视频发帖",
+        "status": "warning",
+        "msg": "找不到原视频文件，已跳过"
+    },
+    {
+        "timestamp": "2026-04-20 21:57:03",
+        "profile_id": "k1bhea90",
+        "script": "5. 视频发帖",
+        "status": "warning",
+        "msg": "找不到原视频文件，已跳过"
+    },
+    {
+        "timestamp": "2026-04-20 21:55:43",
+        "profile_id": "k1bhea90",
+        "script": "4. 回关互动",
+        "status": "success",
+        "msg": "互动与回关任务处理完毕"
+    }
+]

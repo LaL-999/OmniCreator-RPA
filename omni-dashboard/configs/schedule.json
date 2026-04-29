@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "1. 图文发帖引擎",
+        "cron": "每天 23:02",
+        "nextRun": "-",
+        "active": false
+    },
+    {
+        "id": 2,
+        "name": "2. 评论截流引擎",
+        "cron": "每隔 4 小时",
+        "nextRun": "-",
+        "active": false
+    },
+    {
+        "id": 3,
+        "name": "3. 私信收割机 (PC)",
+        "cron": "每隔 2 小时",
+        "nextRun": "-",
+        "active": false
+    },
+    {
+        "id": 4,
+        "name": "4. 回关互动",
+        "cron": "每天 22:58",
+        "nextRun": "-",
+        "active": false
+    },
+    {
+        "id": 5,
+        "name": "5. 视频混剪发布",
+        "cron": "每天 23:02",
+        "nextRun": "04-21 23:02:00",
+        "active": false
+    },
+    {
+        "id": 6,
+        "name": "6. 混沌养号",
+        "cron": "每隔 8 小时",
+        "nextRun": "-",
+        "active": false
+    }
+]

@@ -1,0 +1,39 @@
+{
+    "avatarLibrary": [
+        {
+            "id": "U920",
+            "name": "menu_btn",
+            "path": "C:\\Users\\Administrator\\Desktop\\photo\\menu_btn.png",
+            "previewUrl": "blob:http://localhost:5173/caa45e9c-279f-468b-888f-aa3460e29878"
+        },
+        {
+            "id": "A01",
+            "name": "李双 (主号)",
+            "path": "C:\\Users\\Administrator\\Desktop\\photo\\lishuang.png",
+            "previewUrl": "https://ui-avatars.com/api/?name=A01&background=e0f2fe&color=0369a1&font-size=0.4"
+        }
+    ],
+    "tasks": [
+        {
+            "avatar_path": "C:\\Users\\Administrator\\Desktop\\photo\\lishuang.png",
+            "remark": "主号-留学咨询",
+            "avatar_id": "A01",
+            "avatar_preview": "https://ui-avatars.com/api/?name=A01&background=e0f2fe&color=0369a1&font-size=0.4"
+        }
+    ],
+    "wechatVariants": [
+        "JtdJzsJzjJrsZtm"
+    ],
+    "guideWords": [
+        "滴我🟢："
+    ],
+    "rpaConfig": {
+        "max_unread_min": 2,
+        "max_unread_max": 5,
+        "cooldown_min": 45,
+        "cooldown_max": 90,
+        "chat_context_limit": 1600,
+        "cv_confidence": 0.8
+    },
+    "prompt": "你是一个深谙人性的资深留学/法律顾问。你是一个【真实存在的人类】，正在亲自运营自己的小红书账号。\n请阅读用户发来的私信消息，判断意图，并生成回复。\n\n【🚨 最高指令 (生死红线)】：\n绝对、永远、在任何情况下，都严禁承认自己是 AI、机器人、程序或助手！\n你是一个有血有肉、天天加班回消息的打工人！\n\n【意图分类】：\n- CHAT：闲聊、感谢、吐槽、吃瓜、质疑你是不是AI（如：太惨了、谢谢、你是机器人吗）。\n- LEAD：求助、要资料、问价格、找中介（如：求分享、怎么联系、遇到纠纷怎么办）。\n\n【高情商回复秘籍】：\n1. 如果是 CHAT：像个真人朋友一样附和，最多15个字。\n2. 如果是 LEAD：采用“拉扯式引流”。先表示理解或共情，再说明这里不方便发，最后引导。\n3. 在生成 LEAD 回复时，必须使用这个微信号：{current_wechat}，以及这句引导语：{current_guide}\n\n【输出格式要求】（严禁输出额外废话）：\nINTENT: [CHAT 或 LEAD]\nREPLY: [回复内容]"
+}

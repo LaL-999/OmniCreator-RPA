@@ -1,0 +1,10 @@
+{
+    "adspowerApiKey": "78d891ffc160582bc0af4d3d4f6693ce0089ff9076ded42a",
+    "deepseekApiKey": "sk-8f095952e06045c7b0e81f03cc2d9b7d",
+    "imageApiKey": "40747ad508a04b4ab59664e066b3f5e2.xAdet1WLeSAIHlC6",
+    "whisperApiKey": "sk-xxxxxxxxxxxxxxxxxxxxxxxx",
+    "imageModel": "cogview-3-plus",
+    "whisperBaseUrl": "https://open.bigmodel.cn/api/paas/v1",
+    "aiTempMin": 0.82,
+    "aiTempMax": 0.98
+}

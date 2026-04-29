@@ -1,0 +1,30 @@
+{
+    "tasks": [
+        {
+            "profile_id": "k1bhea90",
+            "raw_video_path": "C:\\video_assets\\1.mp4",
+            "fallback_topic": "美国留学生租房避坑指南"
+        },
+        {
+            "profile_id": "k1bheai1",
+            "raw_video_path": "C:\\video_assets\\2.mp4",
+            "fallback_topic": "去新加坡留学必须要知道的学术红线"
+        }
+    ],
+    "styles": [
+        "【碎碎念吐槽型】：语气随性，多用感叹号，像朋友聊天，不要有太强的逻辑性。",
+        "【小白真诚分享型】：假装刚踩过坑，心有余悸地提醒大家，语言通俗接地气。",
+        "【极简懒人型】：直接把核心点说出来，用词年轻化（如：绝绝子、无语、避雷）。"
+    ],
+    "rpaConfig": {
+        "speed_shift_min": 1.01,
+        "speed_shift_max": 1.04,
+        "color_shift_min": 0.97,
+        "color_shift_max": 1.03,
+        "vol_shift_min": 0.95,
+        "vol_shift_max": 1.05,
+        "cooldown_min": 45,
+        "cooldown_max": 91
+    },
+    "prompt": "你是一个小红书百万粉丝的短视频操盘手。\n请根据以下【视频原话或主题】，写一篇配套的视频发布文案。\n\n【🚨 顶级防封与排版红线】：\n1. 拒绝机械感：绝对禁止使用“首先”、“其次”等AI词汇！\n2. {selected_style}\n3. 【核心排版要求】：\n   - 使用 Emoji 作为视觉引导。每讲完一个小点，必须【换行留白】。\n   - 保证长篇正文连贯易读，但整体排版要保持随性。"
+}

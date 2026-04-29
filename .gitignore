@@ -1,0 +1,19 @@
+# 环境与密钥
+.env
+__pycache__/
+*.sqlite3
+
+# Python / FastAPI
+venv/
+env/
+
+# Node / React前端
+node_modules/
+dist/
+.DS_Store
+
+# 忽略所有多媒体素材和业务敏感视频
+video_assets/
+*.mp4
+*.mov
+*.avi
