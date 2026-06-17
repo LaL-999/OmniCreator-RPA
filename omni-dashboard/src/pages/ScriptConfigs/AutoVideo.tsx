@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { AppleCard } from '../../components/common/AppleCard';
 import { DynamicTagList } from '../../components/common/DynamicTagList';
 import { PromptEditor } from '../../components/common/PromptEditor';
-import { MatrixManager } from '../../components/modules/MatrixManager';
+import { MatrixManager, type MatrixTask } from '../../components/modules/MatrixManager';
 import { InfoTooltip } from '../../components/common/InfoTooltip';
 import { Save, FileVideo, ShieldAlert } from 'lucide-react';
+import { toast } from '../../utils/toast';
 
 export const AutoVideo = () => {
-  const [tasks, setTasks] = useState([
+  const [tasks, setTasks] = useState<MatrixTask[]>([
     { profile_id: "k1bhea90", fallback_topic: "美国留学生租房避坑指南" },
     { profile_id: "k1bheai1", fallback_topic: "去新加坡留学必须要知道的学术红线" }
   ]);
@@ -58,9 +59,9 @@ export const AutoVideo = () => {
       await fetch('/api/config/video', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
-      alert("视频混剪配置已成功同步到后端！");
+      toast.success("视频混剪配置已成功同步到后端！");
     } catch(e) {
-      alert("保存失败，请检查后端状态。");
+      toast.error("保存失败，请检查后端状态。");
     }
   };
 
@@ -68,12 +69,12 @@ export const AutoVideo = () => {
     <div className="space-y-6 pb-12">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-800">5. 视频混剪发布</h1>
-          <p className="text-gray-500 mt-2"> 负责本地视频的底层洗稿、听写与全自动发布。</p>
+          <h1 className="text-3xl font-bold tracking-tight text-content">5. 视频混剪发布</h1>
+          <p className="text-content-muted mt-2"> 负责本地视频的底层洗稿、听写与全自动发布。</p>
         </div>
         <button
           onClick={handleSave}
-          className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all shadow-lg active:scale-95"
+          className="btn-primary flex items-center space-x-2"
         >
           <Save size={18} />
           <span>保存配置</span>
@@ -99,53 +100,53 @@ export const AutoVideo = () => {
         <div className="xl:col-span-1 space-y-6">
           <AppleCard className="h-full">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><ShieldAlert size={20} /></div>
-              <h2 className="text-lg font-semibold text-gray-800">底层洗稿与防封参数</h2>
+              <div className="p-2 bg-amber-400/10 text-amber-400 rounded-xl"><ShieldAlert size={20} /></div>
+              <h2 className="text-lg font-semibold text-content">底层洗稿与防封参数</h2>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1 flex justify-between">
+                <label className="block text-xs font-medium text-content-muted mb-1 flex justify-between">
                   <span>画面变速扰动率 (倍)</span>
                   <InfoTooltip content="通过微弱变速打乱每一帧的 MD5。如 1.01~1.03 表示加速 1%~3%。" />
                 </label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" step="0.01" value={rpaConfig.speed_shift_min} onChange={e=>setRpaConfig({...rpaConfig, speed_shift_min: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" step="0.01" value={rpaConfig.speed_shift_max} onChange={e=>setRpaConfig({...rpaConfig, speed_shift_max: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" step="0.01" value={rpaConfig.speed_shift_min} onChange={e=>setRpaConfig({...rpaConfig, speed_shift_min: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" step="0.01" value={rpaConfig.speed_shift_max} onChange={e=>setRpaConfig({...rpaConfig, speed_shift_max: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
-              <div className="h-px bg-gray-100"></div>
+              <div className="h-px bg-line"></div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1 flex justify-between">
+                <label className="block text-xs font-medium text-content-muted mb-1 flex justify-between">
                   <span>色彩滤镜偏移率 (倍)</span>
                   <InfoTooltip content="改变全局画面的明暗度，打破图像识别指纹。1.0 为不改变。" />
                 </label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" step="0.01" value={rpaConfig.color_shift_min} onChange={e=>setRpaConfig({...rpaConfig, color_shift_min: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" step="0.01" value={rpaConfig.color_shift_max} onChange={e=>setRpaConfig({...rpaConfig, color_shift_max: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" step="0.01" value={rpaConfig.color_shift_min} onChange={e=>setRpaConfig({...rpaConfig, color_shift_min: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" step="0.01" value={rpaConfig.color_shift_max} onChange={e=>setRpaConfig({...rpaConfig, color_shift_max: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
-              <div className="h-px bg-gray-100"></div>
+              <div className="h-px bg-line"></div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1 flex justify-between">
+                <label className="block text-xs font-medium text-content-muted mb-1 flex justify-between">
                   <span>音轨音量扰动率 (倍)</span>
                   <InfoTooltip content="改变视频原声的音量，打破音频波形指纹查重。" />
                 </label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" step="0.01" value={rpaConfig.vol_shift_min} onChange={e=>setRpaConfig({...rpaConfig, vol_shift_min: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" step="0.01" value={rpaConfig.vol_shift_max} onChange={e=>setRpaConfig({...rpaConfig, vol_shift_max: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" step="0.01" value={rpaConfig.vol_shift_min} onChange={e=>setRpaConfig({...rpaConfig, vol_shift_min: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" step="0.01" value={rpaConfig.vol_shift_max} onChange={e=>setRpaConfig({...rpaConfig, vol_shift_max: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
-              <div className="h-px bg-gray-100"></div>
+              <div className="h-px bg-line"></div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">账号切换冷却时间 (秒)</label>
+                <label className="block text-xs font-medium text-content-muted mb-1">账号切换冷却时间 (秒)</label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" value={rpaConfig.cooldown_min} onChange={e=>setRpaConfig({...rpaConfig, cooldown_min: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" value={rpaConfig.cooldown_max} onChange={e=>setRpaConfig({...rpaConfig, cooldown_max: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" value={rpaConfig.cooldown_min} onChange={e=>setRpaConfig({...rpaConfig, cooldown_min: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" value={rpaConfig.cooldown_max} onChange={e=>setRpaConfig({...rpaConfig, cooldown_max: Number(e.target.value)})} className="w-20 px-3 py-1.5 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
             </div>
@@ -156,8 +157,8 @@ export const AutoVideo = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppleCard>
           <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-pink-50 text-pink-600 rounded-lg"><FileVideo size={20} /></div>
-            <h2 className="text-lg font-semibold text-gray-800">配文风格人设池</h2>
+            <div className="p-2 bg-pink-400/10 text-pink-300 rounded-xl"><FileVideo size={20} /></div>
+            <h2 className="text-lg font-semibold text-content">配文风格人设池</h2>
           </div>
           <DynamicTagList
             title="视频文案语气"

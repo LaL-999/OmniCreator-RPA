@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Activity, ShieldCheck } from 'lucide-react';
 import { AppleCard } from '../../components/common/AppleCard';
 
 interface LoginProps {
@@ -11,10 +12,9 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [password, setPassword] = useState('');
   const [secretKey, setSecretKey] = useState('');
   const [error, setError] = useState('');
-  // 🔥 新增：记住密码状态
   const [rememberMe, setRememberMe] = useState(false);
 
-  // 🔥 初始化：检查硬盘里有没有记住的账号密码
+  // 初始化：读取记住的账号
   useEffect(() => {
     const savedUser = localStorage.getItem('matrix_username');
     const savedPass = localStorage.getItem('matrix_password');
@@ -34,79 +34,129 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         setError('系统级密匙错误，拒绝注册访问。');
         return;
       }
-      alert('注册成功！');
       setIsRegister(false);
-    } else {
-      if (username && password) {
-        // 🔥 登录成功后：处理持久化存储
-        if (rememberMe) {
-          localStorage.setItem('matrix_username', username);
-          localStorage.setItem('matrix_password', password);
-          localStorage.setItem('isAuthenticated', 'true'); // 硬盘级：永久免登录
-        } else {
-          localStorage.removeItem('matrix_username');
-          localStorage.removeItem('matrix_password');
-          sessionStorage.setItem('isAuthenticated', 'true'); // 会话级：刷新免登录，关网页掉线
-        }
-        onLoginSuccess();
+      setError('');
+      return;
+    }
+
+    if (username && password) {
+      if (rememberMe) {
+        localStorage.setItem('matrix_username', username);
+        localStorage.setItem('matrix_password', password);
+        localStorage.setItem('isAuthenticated', 'true'); // 永久免登录
       } else {
-        setError('请输入账号和密码。');
+        localStorage.removeItem('matrix_username');
+        localStorage.removeItem('matrix_password');
+        sessionStorage.setItem('isAuthenticated', 'true'); // 会话级
       }
+      onLoginSuccess();
+    } else {
+      setError('请输入账号和密码。');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 bg-[url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center">
-      <div className="absolute inset-0 bg-white/30 backdrop-blur-2xl"></div>
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4">
+      {/* 背景：品牌光晕 + 细网格 */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-base" />
+        <div
+          className="absolute inset-0 opacity-[0.18]"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)',
+            backgroundSize: '44px 44px',
+            maskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)'
+          }}
+        />
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[640px] h-[640px] rounded-full bg-brand/20 blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[420px] h-[420px] rounded-full bg-accent/10 blur-[120px]" />
+      </div>
 
-      <div className="relative z-10 w-full max-w-md">
+      <div className="relative z-10 w-full max-w-md animate-slide-up">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-semibold text-gray-800 tracking-tight">Matrix<span className="text-blue-600">Hub</span></h1>
-          <p className="text-gray-500 mt-2">全自动化运营中枢系统</p>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-brand to-accent shadow-glow mb-4">
+            <Activity size={26} className="text-white" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight text-content">
+            Omni<span className="bg-gradient-to-r from-brand-soft to-accent bg-clip-text text-transparent">Creator</span>
+          </h1>
+          <p className="text-content-muted mt-2">全自动化运营中枢系统</p>
         </div>
 
         <AppleCard>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">账号</label>
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-gray-100/50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Admin" />
+              <label className="field-label">账号</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="field-input"
+                placeholder="Admin"
+              />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">密码</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-gray-100/50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="••••••••" />
+              <label className="field-label">密码</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="field-input"
+                placeholder="••••••••"
+              />
             </div>
 
             {isRegister && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">系统密匙</label>
-                <input type="password" value={secretKey} onChange={(e) => setSecretKey(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-red-50/50 border border-red-200 focus:outline-none focus:ring-2 focus:ring-red-500/50 transition-all placeholder-red-300 text-red-700" placeholder="请输入核心密匙" />
-              </div>
-            )}
-
-            {/* 🔥 新增：记住账号UI */}
-            {!isRegister && (
-              <div className="flex items-center justify-between">
-                <label className="flex items-center text-sm text-gray-600 cursor-pointer">
-                  <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="mr-2 rounded text-blue-600 focus:ring-blue-500" />
-                  记住账号和登录状态
+                <label className="field-label flex items-center gap-1.5">
+                  <ShieldCheck size={13} className="text-red-400" /> 系统密匙
                 </label>
+                <input
+                  type="password"
+                  value={secretKey}
+                  onChange={(e) => setSecretKey(e.target.value)}
+                  className="w-full px-4 py-2.5 text-sm rounded-xl bg-red-500/5 border border-red-500/30 text-red-200 placeholder-red-400/50 focus:outline-none focus:border-red-500/60 focus:ring-2 focus:ring-red-500/20 transition-all"
+                  placeholder="请输入核心密匙"
+                />
               </div>
             )}
 
-            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {!isRegister && (
+              <label className="flex items-center text-sm text-content-muted cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="mr-2 rounded bg-surface-input border-line text-brand focus:ring-brand/40"
+                />
+                记住账号和登录状态
+              </label>
+            )}
 
-            <button type="submit" className="w-full py-3 mt-4 bg-gray-800 text-white rounded-xl font-medium hover:bg-gray-900 transition-colors shadow-lg shadow-gray-800/20">
+            {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+
+            <button type="submit" className="btn-primary w-full py-3 mt-1">
               {isRegister ? '验证并注册' : '登 录'}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <button type="button" onClick={() => setIsRegister(!isRegister)} className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors">
+            <button
+              type="button"
+              onClick={() => {
+                setIsRegister(!isRegister);
+                setError('');
+              }}
+              className="text-sm text-brand-soft hover:text-brand font-medium transition-colors"
+            >
               {isRegister ? '返回登录' : '没有账号？使用密匙注册'}
             </button>
           </div>
         </AppleCard>
+
+        <p className="text-center text-[11px] text-content-dim mt-6">OmniCreator 控制台 · 本地化部署 · v1.0</p>
       </div>
     </div>
   );

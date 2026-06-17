@@ -1,4 +1,3 @@
-// DynamicTagList.tsx - 待实现
 import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import { InfoTooltip } from './InfoTooltip';
@@ -16,13 +15,14 @@ export const DynamicTagList: React.FC<DynamicTagListProps> = ({
   description,
   tags,
   onChange,
-  placeholder = "输入内容后按回车添加..."
+  placeholder = '输入内容后按回车添加...'
 }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleAdd = () => {
-    if (inputValue.trim() && !tags.includes(inputValue.trim())) {
-      onChange([...tags, inputValue.trim()]);
+    const value = inputValue.trim();
+    if (value && !tags.includes(value)) {
+      onChange([...tags, value]);
       setInputValue('');
     }
   };
@@ -41,7 +41,7 @@ export const DynamicTagList: React.FC<DynamicTagListProps> = ({
   return (
     <div className="space-y-3">
       <div className="flex items-center">
-        <h3 className="text-sm font-semibold text-gray-800">{title}</h3>
+        <h3 className="text-sm font-semibold text-content">{title}</h3>
         <InfoTooltip content={description} />
       </div>
 
@@ -52,35 +52,35 @@ export const DynamicTagList: React.FC<DynamicTagListProps> = ({
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="flex-1 px-4 py-2 text-sm rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+          className="field-input flex-1"
         />
         <button
           onClick={handleAdd}
           disabled={!inputValue.trim()}
-          className="p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="p-2.5 rounded-xl bg-brand/10 text-brand-soft border border-brand/20 hover:bg-brand/20 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex-shrink-0"
         >
-          <Plus size={20} />
+          <Plus size={18} />
         </button>
       </div>
 
-      <div className="flex flex-wrap gap-2 pt-2">
+      <div className="flex flex-wrap gap-2 pt-1">
         {tags.map((tag, index) => (
           <div
             key={index}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700 group hover:border-blue-200 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.04] border border-line rounded-lg text-sm text-content-muted group hover:border-brand/40 hover:text-content transition-all"
           >
-            <span className="max-w-xs truncate" title={tag}>{tag}</span>
+            <span className="max-w-xs truncate" title={tag}>
+              {tag}
+            </span>
             <button
               onClick={() => handleRemove(index)}
-              className="text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md p-0.5 opacity-0 group-hover:opacity-100 transition-all"
+              className="text-content-dim hover:text-red-300 hover:bg-red-500/10 rounded-md p-0.5 opacity-0 group-hover:opacity-100 transition-all"
             >
               <X size={14} />
             </button>
           </div>
         ))}
-        {tags.length === 0 && (
-          <span className="text-sm text-gray-400">暂无配置，请添加。</span>
-        )}
+        {tags.length === 0 && <span className="text-sm text-content-dim">暂无配置，请添加。</span>}
       </div>
     </div>
   );

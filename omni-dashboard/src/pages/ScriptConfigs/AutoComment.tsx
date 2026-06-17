@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { AppleCard } from '../../components/common/AppleCard';
 import { DynamicTagList } from '../../components/common/DynamicTagList';
 import { PromptEditor } from '../../components/common/PromptEditor';
-import { MatrixManager } from '../../components/modules/MatrixManager';
+import { MatrixManager, type MatrixTask } from '../../components/modules/MatrixManager';
 import { InfoTooltip } from '../../components/common/InfoTooltip';
 import { Save, MessageCircle, ShieldAlert, Search } from 'lucide-react';
+import { toast } from '../../utils/toast';
 
 export const AutoComment = () => {
-  const [tasks, setTasks] = useState([
+  const [tasks, setTasks] = useState<MatrixTask[]>([
     { profile_id: "k1bhea90", keyword: "美国留学 租房被坑" },
     { profile_id: "k1bheai1", keyword: "新加坡留学 签证材料" },
     { profile_id: "k1bheamh", keyword: "英国留学 挂科申诉" }
@@ -72,9 +73,9 @@ export const AutoComment = () => {
       await fetch('/api/config/comment', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
-      alert("评论截流配置已成功同步到后端环境！");
+      toast.success("评论截流配置已成功同步到后端环境！");
     } catch(e) {
-      alert("保存失败，请检查后端是否启动。");
+      toast.error("保存失败，请检查后端是否启动。");
     }
   };
 
@@ -82,12 +83,12 @@ export const AutoComment = () => {
     <div className="space-y-6 pb-12">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-800">2. 评论截流引擎</h1>
-          <p className="text-gray-500 mt-2"> 自动搜索精准流量池并释放拟人化钩子评论。</p>
+          <h1 className="text-3xl font-bold tracking-tight text-content">2. 评论截流引擎</h1>
+          <p className="text-content-muted mt-2"> 自动搜索精准流量池并释放拟人化钩子评论。</p>
         </div>
         <button
           onClick={handleSave}
-          className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all shadow-lg active:scale-95"
+          className="btn-primary flex items-center space-x-2"
         >
           <Save size={18} />
           <span>保存配置</span>
@@ -110,38 +111,38 @@ export const AutoComment = () => {
         <div className="xl:col-span-1 space-y-6">
           <AppleCard className="h-full">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><ShieldAlert size={20} /></div>
-              <h2 className="text-lg font-semibold text-gray-800">截流风控与限流器</h2>
+              <div className="p-2 bg-amber-400/10 text-amber-400 rounded-xl"><ShieldAlert size={20} /></div>
+              <h2 className="text-lg font-semibold text-content">截流风控与限流器</h2>
             </div>
 
             <div className="space-y-5">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2">
+                <label className="block text-xs font-medium text-content-muted mb-2">
                   单号截流派发上限 (个)
                   <InfoTooltip content="单个账号每次启动最多去几篇帖子里留言。新号建议 1-3，老号可适当增加。" />
                 </label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" value={rpaConfig.target_quota_min} onChange={e=>setRpaConfig({...rpaConfig, target_quota_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" value={rpaConfig.target_quota_max} onChange={e=>setRpaConfig({...rpaConfig, target_quota_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" value={rpaConfig.target_quota_min} onChange={e=>setRpaConfig({...rpaConfig, target_quota_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" value={rpaConfig.target_quota_max} onChange={e=>setRpaConfig({...rpaConfig, target_quota_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
-              <div className="h-px bg-gray-100"></div>
+              <div className="h-px bg-line"></div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2">帖子间浏览休眠 (秒)</label>
+                <label className="block text-xs font-medium text-content-muted mb-2">帖子间浏览休眠 (秒)</label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" value={rpaConfig.post_delay_min} onChange={e=>setRpaConfig({...rpaConfig, post_delay_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" value={rpaConfig.post_delay_max} onChange={e=>setRpaConfig({...rpaConfig, post_delay_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" value={rpaConfig.post_delay_min} onChange={e=>setRpaConfig({...rpaConfig, post_delay_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" value={rpaConfig.post_delay_max} onChange={e=>setRpaConfig({...rpaConfig, post_delay_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
-              <div className="h-px bg-gray-100"></div>
+              <div className="h-px bg-line"></div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2">账号间切换冷却 (秒)</label>
+                <label className="block text-xs font-medium text-content-muted mb-2">账号间切换冷却 (秒)</label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" value={rpaConfig.cooldown_min} onChange={e=>setRpaConfig({...rpaConfig, cooldown_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" value={rpaConfig.cooldown_max} onChange={e=>setRpaConfig({...rpaConfig, cooldown_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" value={rpaConfig.cooldown_min} onChange={e=>setRpaConfig({...rpaConfig, cooldown_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" value={rpaConfig.cooldown_max} onChange={e=>setRpaConfig({...rpaConfig, cooldown_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
             </div>
@@ -152,8 +153,8 @@ export const AutoComment = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppleCard>
           <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-green-50 text-green-600 rounded-lg"><Search size={20} /></div>
-            <h2 className="text-lg font-semibold text-gray-800">AI 双脑策略阵列</h2>
+            <div className="p-2 bg-emerald-400/10 text-emerald-400 rounded-xl"><Search size={20} /></div>
+            <h2 className="text-lg font-semibold text-content">AI 双脑策略阵列</h2>
           </div>
           <div className="space-y-8">
             <DynamicTagList
@@ -162,7 +163,7 @@ export const AutoComment = () => {
               tags={searchAngles}
               onChange={setSearchAngles}
             />
-            <div className="h-px bg-gray-100"></div>
+            <div className="h-px bg-line"></div>
             <DynamicTagList
               title="💬 评论人设策略 (AI 右脑)"
               description="脚本随机抽取策略赋予 AI，确保每个钩子都极具真实感。"

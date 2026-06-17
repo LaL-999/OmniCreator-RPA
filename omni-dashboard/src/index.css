@@ -2,10 +2,155 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 确保网页撑满全屏，防止出现白边 */
-html, body, #root {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+/* ============================================================
+   OmniCreator 控制台 · 深色科技仪表盘 全局样式
+   说明：组件层内一律避免在 @apply 中使用斜杠透明度（如 bg-x/10），
+   该写法会触发 PostCSS 选择器解析报错，改用原生 rgba()。
+   ============================================================ */
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    @apply bg-base text-content font-sans antialiased;
+    /* 顶部两道柔和的品牌光晕，营造科技氛围 */
+    background-image:
+      radial-gradient(900px 520px at 12% -8%, rgba(99, 102, 241, 0.14), transparent 60%),
+      radial-gradient(820px 520px at 112% 2%, rgba(34, 211, 238, 0.10), transparent 55%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.3);
+    color: #ffffff;
+  }
+
+  /* 细滚动条 */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.13);
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  /* 数字输入框去掉上下箭头 */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  /* 下拉框选项在深色下保持可读 */
+  select option {
+    background-color: #10131c;
+    color: #e8eaf2;
+  }
+}
+
+@layer components {
+  /* 卡片：深色玻璃面板 */
+  .card {
+    @apply bg-surface border border-line rounded-2xl shadow-card;
+  }
+  .card-hover {
+    @apply transition-all duration-300 hover:border-line-strong;
+  }
+
+  /* 表单字段 */
+  .field-label {
+    @apply block text-xs font-medium text-content-muted mb-2;
+  }
+  .field-input {
+    @apply w-full px-4 py-2.5 text-sm rounded-xl bg-surface-input border border-line text-content transition-all;
+  }
+  .field-input::placeholder {
+    color: #5f6680;
+  }
+  .field-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+  }
+
+  /* 按钮 */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 active:scale-95;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed px-5 py-2.5 text-sm text-white;
+    background-image: linear-gradient(to right, #6366f1, #8b5cf6);
+    box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.7);
+  }
+  .btn-primary:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 14px 36px -8px rgba(99, 102, 241, 0.85);
+  }
+  .btn-primary:disabled {
+    box-shadow: none;
+    filter: none;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 active:scale-95 px-4 py-2 text-sm text-content-muted border border-line;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  .btn-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e8eaf2;
+  }
+
+  .btn-soft {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 active:scale-95 px-4 py-2 text-sm;
+    color: #818cf8;
+    background-color: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+  }
+  .btn-soft:hover {
+    background-color: rgba(99, 102, 241, 0.2);
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 active:scale-95 px-4 py-2 text-sm;
+    color: #fca5a5;
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+  .btn-danger:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #fecaca;
+  }
+
+  /* 标签 / 胶囊 */
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-content border border-line;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  /* 彩色图标徽标基座 */
+  .icon-badge {
+    @apply inline-flex items-center justify-center rounded-xl;
+  }
 }

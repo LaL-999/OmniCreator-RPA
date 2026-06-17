@@ -2,12 +2,13 @@ import React, { useState , useEffect } from 'react';
 import { AppleCard } from '../../components/common/AppleCard';
 import { DynamicTagList } from '../../components/common/DynamicTagList';
 import { PromptEditor } from '../../components/common/PromptEditor';
-import { MatrixManager } from '../../components/modules/MatrixManager';
+import { MatrixManager, type MatrixTask } from '../../components/modules/MatrixManager';
 import { InfoTooltip } from '../../components/common/InfoTooltip'; // 🔥 就是漏了这一行！！！
+import { toast } from '../../utils/toast';
 import { Save, Sparkles, ShieldAlert } from 'lucide-react';
 
 export const AdspowerTest = () => {
-  const [tasks, setTasks] = useState([
+  const [tasks, setTasks] = useState<MatrixTask[]>([
     { profile_id: "k1bhea90", topic: "美国留学的法律避坑指南，主要讲租房和打工" },
     { profile_id: "k1bheai1", topic: "去新加坡留学前必看的法律常识，签证和学术诚信" }
   ]);
@@ -63,9 +64,9 @@ export const AdspowerTest = () => {
       await fetch('/api/config/adspower', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
-      alert("图文发帖配置已成功同步到后端环境！");
+      toast.success("图文发帖配置已成功同步到后端环境！");
     } catch(e) {
-      alert("保存失败，请检查后端是否启动。");
+      toast.error("保存失败，请检查后端是否启动。");
     }
   };
 
@@ -73,12 +74,12 @@ export const AdspowerTest = () => {
     <div className="space-y-6 pb-12">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-800">1. 图文发帖引擎</h1>
-          <p className="text-gray-500 mt-2">负责图文笔记的 AI 撰写、视觉绘图、排版与矩阵发布。</p>
+          <h1 className="text-3xl font-bold tracking-tight text-content">1. 图文发帖引擎</h1>
+          <p className="text-content-muted mt-2">负责图文笔记的 AI 撰写、视觉绘图、排版与矩阵发布。</p>
         </div>
         <button
           onClick={handleSave}
-          className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all shadow-lg active:scale-95"
+          className="btn-primary"
         >
           <Save size={18} />
           <span>保存脚本配置</span>
@@ -102,32 +103,32 @@ export const AdspowerTest = () => {
         <div className="xl:col-span-1 space-y-6">
           <AppleCard className="h-full">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><ShieldAlert size={20} /></div>
-              <h2 className="text-lg font-semibold text-gray-800">防封与生成策略</h2>
+              <div className="p-2 bg-amber-400/10 text-amber-400 rounded-xl"><ShieldAlert size={20} /></div>
+              <h2 className="text-lg font-semibold text-content">防封与生成策略</h2>
             </div>
 
             <div className="space-y-5">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2 flex justify-between">
+                <label className="block text-xs font-medium text-content-muted mb-2 flex justify-between">
                   <span>正文配图生成数量 (张)</span>
                   <InfoTooltip content="除了封面外，AI 将根据该范围随机生成对应数量的知识点附图。" />
                 </label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" value={strategyConfig.image_count_min} onChange={e=>setStrategyConfig({...strategyConfig, image_count_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" value={strategyConfig.image_count_max} onChange={e=>setStrategyConfig({...strategyConfig, image_count_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" value={strategyConfig.image_count_min} onChange={e=>setStrategyConfig({...strategyConfig, image_count_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" value={strategyConfig.image_count_max} onChange={e=>setStrategyConfig({...strategyConfig, image_count_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
-              <div className="h-px bg-gray-100"></div>
+              <div className="h-px bg-line"></div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2 flex justify-between">
+                <label className="block text-xs font-medium text-content-muted mb-2 flex justify-between">
                   <span>账号切换冷却时间 (秒)</span>
                   <InfoTooltip content="防止发帖频率过快导致被系统打上营销号标签。" />
                 </label>
                 <div className="flex items-center space-x-2">
-                  <input type="number" value={strategyConfig.cooldown_min} onChange={e=>setStrategyConfig({...strategyConfig, cooldown_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
-                  <span className="text-gray-400">~</span>
-                  <input type="number" value={strategyConfig.cooldown_max} onChange={e=>setStrategyConfig({...strategyConfig, cooldown_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="number" value={strategyConfig.cooldown_min} onChange={e=>setStrategyConfig({...strategyConfig, cooldown_min: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
+                  <span className="text-content-dim">~</span>
+                  <input type="number" value={strategyConfig.cooldown_max} onChange={e=>setStrategyConfig({...strategyConfig, cooldown_max: Number(e.target.value)})} className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25" />
                 </div>
               </div>
             </div>
@@ -139,8 +140,8 @@ export const AdspowerTest = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppleCard>
           <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><Sparkles size={20} /></div>
-            <h2 className="text-lg font-semibold text-gray-800">AI 写作人格池</h2>
+            <div className="p-2 bg-brand/10 text-brand-soft rounded-xl"><Sparkles size={20} /></div>
+            <h2 className="text-lg font-semibold text-content">AI 写作人格池</h2>
           </div>
           <DynamicTagList title="文案人设库" description="确保矩阵账号风格各异。" tags={styles} onChange={setStyles} />
         </AppleCard>

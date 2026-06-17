@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { AppleCard } from '../../components/common/AppleCard';
 import { DynamicTagList } from '../../components/common/DynamicTagList';
 import { PromptEditor } from '../../components/common/PromptEditor';
-import { MatrixManager } from '../../components/modules/MatrixManager';
+import { MatrixManager, type MatrixTask } from '../../components/modules/MatrixManager';
 import { InfoTooltip } from '../../components/common/InfoTooltip';
 import { Save, Send, ShieldAlert } from 'lucide-react';
+import { toast } from '../../utils/toast';
 
 const INITIAL_AVATAR_LIBRARY = [
   { id: 'A01', name: '李双 (主号)', path: 'C:\\Users\\Administrator\\Desktop\\photo\\lishuang.png', previewUrl: 'https://ui-avatars.com/api/?name=A01&background=e0f2fe&color=0369a1&font-size=0.4' },
@@ -12,7 +13,7 @@ const INITIAL_AVATAR_LIBRARY = [
 
 export const AutoDesk = () => {
   const [avatarLibrary, setAvatarLibrary] = useState(INITIAL_AVATAR_LIBRARY);
-  const [tasks, setTasks] = useState([
+  const [tasks, setTasks] = useState<MatrixTask[]>([
     { avatar_path: "C:\\Users\\Administrator\\Desktop\\photo\\lishuang.png", remark: "主号-留学咨询", avatar_id: "A01", avatar_preview: "https://ui-avatars.com/api/?name=A01&background=e0f2fe&color=0369a1&font-size=0.4" }
   ]);
   const [wechatVariants, setWechatVariants] = useState(["JtdJzsJzjJrsZtm"]);
@@ -45,9 +46,9 @@ export const AutoDesk = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      alert("PC 客户端配置已成功同步到后端环境！");
+      toast.success("PC 客户端配置已成功同步到后端环境！");
     } catch(e) {
-      alert("保存失败，请检查后端是否启动。");
+      toast.error("保存失败，请检查后端是否启动。");
     }
   };
 
@@ -56,12 +57,12 @@ export const AutoDesk = () => {
       {/* 页面标题与保存按钮 */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-800">3. 私域收割机 (PC客户端)</h1>
-          <p className="text-gray-500 mt-2"> 纯物理 RPA 自动化，基于图像识别 (CV) 切换账号。</p>
+          <h1 className="text-3xl font-bold tracking-tight text-content">3. 私域收割机 (PC客户端)</h1>
+          <p className="text-content-muted mt-2"> 纯物理 RPA 自动化，基于图像识别 (CV) 切换账号。</p>
         </div>
         <button
           onClick={handleSave}
-          className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all shadow-lg shadow-gray-900/20 active:scale-95"
+          className="btn-primary"
         >
           <Save size={18} />
           <span>保存 PC 配置</span>
@@ -95,60 +96,60 @@ export const AutoDesk = () => {
         <div className="xl:col-span-1 space-y-6">
           <AppleCard className="h-full">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><ShieldAlert size={20} /></div>
-              <h2 className="text-lg font-semibold text-gray-800">物理级防封与视觉策略</h2>
+              <div className="p-2 bg-amber-400/10 text-amber-400 rounded-xl"><ShieldAlert size={20} /></div>
+              <h2 className="text-lg font-semibold text-content">物理级防封与视觉策略</h2>
             </div>
 
             <div className="space-y-6">
               {/* 碎片化处理条数 */}
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2">单号单次处理上限 (条)</label>
+                <label className="block text-xs font-medium text-content-muted mb-2">单号单次处理上限 (条)</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="number"
                     value={rpaConfig.max_unread_min}
                     onChange={e=>setRpaConfig({...rpaConfig, max_unread_min: Number(e.target.value)})}
-                    className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"
+                    className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25"
                   />
-                  <span className="text-gray-400">~</span>
+                  <span className="text-content-dim">~</span>
                   <input
                     type="number"
                     value={rpaConfig.max_unread_max}
                     onChange={e=>setRpaConfig({...rpaConfig, max_unread_max: Number(e.target.value)})}
-                    className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"
+                    className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25"
                   />
                 </div>
-                <p className="text-[10px] text-gray-400 mt-2">触发碎片化处理机制，防止被判定为机器清消息。</p>
+                <p className="text-[10px] text-content-dim mt-2">触发碎片化处理机制，防止被判定为机器清消息。</p>
               </div>
 
-              <div className="h-px bg-gray-100"></div>
+              <div className="h-px bg-line"></div>
 
               {/* 切号冷却时间 */}
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2">切号冷却时间 (秒)</label>
+                <label className="block text-xs font-medium text-content-muted mb-2">切号冷却时间 (秒)</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="number"
                     value={rpaConfig.cooldown_min}
                     onChange={e=>setRpaConfig({...rpaConfig, cooldown_min: Number(e.target.value)})}
-                    className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"
+                    className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25"
                   />
-                  <span className="text-gray-400">~</span>
+                  <span className="text-content-dim">~</span>
                   <input
                     type="number"
                     value={rpaConfig.cooldown_max}
                     onChange={e=>setRpaConfig({...rpaConfig, cooldown_max: Number(e.target.value)})}
-                    className="w-16 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"
+                    className="w-16 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25"
                   />
                 </div>
-                <p className="text-[10px] text-gray-400 mt-2">增加极高延迟，打破固定频率特征关联。</p>
+                <p className="text-[10px] text-content-dim mt-2">增加极高延迟，打破固定频率特征关联。</p>
               </div>
 
-              <div className="h-px bg-gray-100"></div>
+              <div className="h-px bg-line"></div>
 
               {/* 🔥 新增：OpenCV 容错率 */}
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2 flex items-center justify-between">
+                <label className="block text-xs font-medium text-content-muted mb-2 flex items-center justify-between">
                   <span>OpenCV 视觉匹配容错率</span>
                   <InfoTooltip content="值越小(如0.70)，越容易匹配到头像，但可能误触；值越大(如0.95)，匹配越严格。若经常提示找不到头像，请调低此值。" />
                 </label>
@@ -159,13 +160,13 @@ export const AutoDesk = () => {
                   max="0.99"
                   value={rpaConfig.cv_confidence}
                   onChange={e=>setRpaConfig({...rpaConfig, cv_confidence: Number(e.target.value)})}
-                  className="w-24 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"
+                  className="w-24 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25"
                 />
               </div>
 
               {/* 🔥 新增：AI 记忆截断限制 */}
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-2 flex items-center justify-between">
+                <label className="block text-xs font-medium text-content-muted mb-2 flex items-center justify-between">
                   <span>AI 记忆截断限制 (字数)</span>
                   <InfoTooltip content="读取聊天记录时，最多传给 AI 多少个字。防止对方发送数万字的长文导致 API Token 计费爆炸或报错。" />
                 </label>
@@ -174,7 +175,7 @@ export const AutoDesk = () => {
                   step="100"
                   value={rpaConfig.chat_context_limit}
                   onChange={e=>setRpaConfig({...rpaConfig, chat_context_limit: Number(e.target.value)})}
-                  className="w-24 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"
+                  className="w-24 px-3 py-2 bg-surface-input border border-line rounded-lg text-center text-sm text-content focus:outline-none focus:ring-2 focus:ring-brand/25"
                 />
               </div>
 
@@ -187,8 +188,8 @@ export const AutoDesk = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppleCard>
           <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg"><Send size={20} /></div>
-            <h2 className="text-lg font-semibold text-gray-800">防查杀导流矩阵</h2>
+            <div className="p-2 bg-brand/10 text-brand-soft rounded-xl"><Send size={20} /></div>
+            <h2 className="text-lg font-semibold text-content">防查杀导流矩阵</h2>
           </div>
           <div className="space-y-8">
             <DynamicTagList
@@ -197,7 +198,7 @@ export const AutoDesk = () => {
               tags={wechatVariants}
               onChange={setWechatVariants}
             />
-            <div className="h-px bg-gray-100"></div>
+            <div className="h-px bg-line"></div>
             <DynamicTagList
               title="拉扯话术池 (Guide Words)"
               description="引流前置诱饵话术，使引流行为更像人类真实交流。"

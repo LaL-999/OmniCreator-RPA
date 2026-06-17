@@ -5,7 +5,9 @@ __pycache__/
 
 # Python / FastAPI
 venv/
+.venv/
 env/
+*.tmp
 
 # Node / React前端
 node_modules/
@@ -17,3 +19,6 @@ video_assets/
 *.mp4
 *.mov
 *.avi
+
+# Claude Code 本地配置（不纳入版本库）
+.claude/

@@ -1,0 +1,7 @@
+# OmniCreator 控制台 · 后端依赖
+# 安装： pip install -r requirements.txt   （start.bat 会自动完成）
+
+fastapi>=0.110,<1.0
+uvicorn[standard]>=0.29,<1.0
+APScheduler>=3.10,<4.0          # 4.x 为破坏性重构，本项目使用 3.x API
+python-multipart>=0.0.9         # FastAPI 接收文件上传（/api/media/upload）必需
